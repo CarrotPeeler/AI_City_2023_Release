@@ -1,0 +1,5 @@
+data/*
+slowfast/checkpoints/*
+slowfast/*.csv
+slowfast/annotations/*
+**/*training_output*/*

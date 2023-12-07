@@ -1,0 +1,19 @@
+2 12 9807 9803
+2 14 10 2 => linking
+4 4 10 3 => linking
+4 8 2 8 might be correct as is
+6 3 0 11 => linking
+7 4 8 11 => linking
+7 6 0 9 => linking
+7 11 9 1
+8 3 10 2 => linking
+8 4 1 14 => linking
+8 11 8 12 => linking
+8 12 10 0 => linking
+9 4 132 142
+9 7 0 7 => linking
+9 12 9 2 => linking
+10 2 7 2 => have linking threshold be lower (0.5 or 1)
+10 5 9 1 => linking
+10 12 1 8 might be correct as is
+10 13 0 20 

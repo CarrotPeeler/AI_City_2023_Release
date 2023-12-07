@@ -1,0 +1,83 @@
+TRAIN:
+  ENABLE: False
+  DATASET: AI-City-Track-3
+  BATCH_SIZE: 1
+  EVAL_PERIOD: 2
+  CHECKPOINT_PERIOD: 20
+  AUTO_RESUME: True
+  CHECKPOINT_TYPE: pytorch
+DATA:
+  USE_OFFSET_SAMPLING: True
+  DECODING_BACKEND: torchvision
+  NUM_FRAMES: 16
+  SAMPLING_RATE: 4
+  TRAIN_JITTER_SCALES: [256, 320]
+  TRAIN_CROP_SIZE: 224
+  TEST_CROP_SIZE: 224
+  INPUT_CHANNEL_NUM: [3]
+  TRAIN_JITTER_SCALES_RELATIVE: [0.08, 1.0]
+  TRAIN_JITTER_ASPECT_RELATIVE: [0.75, 1.3333]
+  RANDOM_FLIP: False
+  CROP_PROMPT: False
+MVIT:
+  ZERO_DECAY_POS_CLS: False
+  USE_ABS_POS: False
+  REL_POS_SPATIAL: True
+  REL_POS_TEMPORAL: True
+  DEPTH: 24
+  NUM_HEADS: 1
+  EMBED_DIM: 96
+  PATCH_KERNEL: (3, 7, 7)
+  PATCH_STRIDE: (2, 4, 4)
+  PATCH_PADDING: (1, 3, 3)
+  MLP_RATIO: 4.0
+  QKV_BIAS: True
+  DROPPATH_RATE: 0.3
+  NORM: "layernorm"
+  MODE: "conv"
+  CLS_EMBED_ON: False
+  DIM_MUL: [[2, 2.0], [5, 2.0], [21, 2.0]]
+  HEAD_MUL: [[2, 2.0], [5, 2.0], [21, 2.0]]
+  POOL_KVQ_KERNEL: [3, 3, 3]
+  POOL_KV_STRIDE_ADAPTIVE: [1, 8, 8]
+  POOL_Q_STRIDE: [[0, 1, 1, 1], [1, 1, 1, 1], [2, 1, 2, 2], [3, 1, 1, 1], [4, 1, 1, 1], [5, 1, 2, 2], [6, 1, 1, 1], [7, 1, 1, 1], [8, 1, 1, 1], [9, 1, 1, 1], [10, 1, 1, 1], [11, 1, 1, 1], [12, 1, 1, 1], [13, 1, 1, 1], [14, 1, 1, 1], [15, 1, 1, 1], [16, 1, 1, 1], [17, 1, 1, 1], [18, 1, 1, 1], [19, 1, 1, 1], [20, 1, 1, 1], [21, 1, 2, 2], [22, 1, 1, 1], [23, 1, 1, 1]]
+  DROPOUT_RATE: 0.0
+  DIM_MUL_IN_ATT: True
+  RESIDUAL_POOLING: True
+MODEL:
+  NUM_CLASSES: 16
+  # ARCH: vit_base_patch16_224
+  # MODEL_NAME: VideoMAEv2
+  ARCH: mvit
+  MODEL_NAME: MViT
+  LOSS_FUNC: soft_cross_entropy # MViT
+  DROPOUT_RATE: 0.5 # MViT
+TEST:
+  ENABLE: True
+  DATASET: AI-City-Track-3
+  BATCH_SIZE: 1
+  NUM_SPATIAL_CROPS: 1 
+  NUM_ENSEMBLE_VIEWS: 1
+DATA_LOADER:
+  NUM_WORKERS: 8
+  PIN_MEMORY: True
+TAL:
+  ENABLE: True
+  # CHECKPOINTS_DIR_DASH: ./checkpoints/VideoMAEv2_5F_CV_dash
+  # CHECKPOINTS_DIR_REAR: ./checkpoints/VideoMAEv2_5F_CV_rear
+  # CHECKPOINTS_DIR_RIGHT: ./checkpoints/VideoMAEv2_5F_CV_right
+  # CHECKPOINTS_DIR_DASH: ./checkpoints/VideoMAEv2_multiview_dash_all
+  # CHECKPOINTS_DIR_REAR: ./checkpoints/VideoMAEv2_multiview_rear_all
+  # CHECKPOINTS_DIR_RIGHT: ./checkpoints/VideoMAEv2_multiview_right_all
+  CHECKPOINTS_DIR_DASH: ./checkpoints/MVITv2_B_32x3_mixup_aug_unprompted
+  CHECKPOINTS_DIR_REAR: ./checkpoints/MVITv2_B_32x3_mixup_aug_unprompted
+  CHECKPOINTS_DIR_RIGHT: ./checkpoints/MVITv2_B_32x3_mixup_aug_unprompted
+  VIDEOS_DIR_PATH: /home/vislab-001/Jared/Envy_AI_City/data/data_inf
+  PROPOSAL_CSV_PATH: /home/vislab-001/Jared/Envy_AI_City/data/data_inf/proposals.csv
+  PROPOSAL_STRIDE: 16
+  PROPOSAL_LENGTH: 64
+LOG_PERIOD: 500
+NUM_GPUS: 1
+NUM_SHARDS: 1
+RNG_SEED: 0
+OUTPUT_DIR: .
