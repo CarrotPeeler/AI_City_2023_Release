@@ -61,6 +61,11 @@ python3 preprocessing/prepare_inf_data_multiview.py < /dev/null > ffmpeg_log.txt
     - adjust NUM_GPUS, NUM_WORKERS, etc. based on your PC specs
 - cd into VideoMAEv2 folder
 - train VideoMAEv2 (optionally run inside tmux):
+Train VideoMAEv2 over all fold data without validation
+```
+bash configs/vit_b_k710_multiview_all.sh < /dev/null > train_log.txt 2>&1 &
+```
+Optional 5-Fold Cross Validation can be run using the following:
 ```
 bash configs/vit_b_k710_multiview_5fold.sh < /dev/null > train_log.txt 2>&1 &
 ```

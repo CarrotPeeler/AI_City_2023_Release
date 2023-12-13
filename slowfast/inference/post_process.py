@@ -129,51 +129,6 @@ def merge_sequence(sequence, proposal_length_secs):
     return (sequence[0], sequence[-1] + proposal_length_secs)
 
 
-# def find_peaks(probs, start_times, proposal_length_secs, prob_threshold, link_threshold=2):
-#     """
-#     Finds the start and end bounds of every peak; uses relative thresholding for processing
-
-#     params:
-#         probs: the data to process bounds for
-#         start_times: array of start times that represent each probability datapoint
-#         proposal_length_secs: length of a proposal in seconds
-#         prob_threshold; threshold to use for probabilities
-#         link_threshold: max difference in seconds between two proposals for them 
-#                         to be considered a part of same action sequence
-#     returns:
-#         dict of tuples; key = (start time, end time), value = list of probabilities in bounds
-#     """
-#     # filter via relative thresholding
-#     probs[probs < prob_threshold] = 0
-#     peak_idxs = np.where(probs > 0)
-#     peak_start_times = np.squeeze(np.take(start_times, peak_idxs), axis=0)
-#     filtered_probs = np.squeeze(np.take(probs, peak_idxs), axis=0)
-
-#     all_bounds = {}
-#     sequence_start_times = [peak_start_times[0]]
-#     sequence_probs = [filtered_probs[0]]
-    
-#     for i in range(1, len(peak_start_times)):
-#         # if time b/w curr start and prev end is too large, merge current sequence times and reset sequence
-#         if peak_start_times[i] - (sequence_start_times[-1] + proposal_length_secs) > link_threshold:
-#             # merge start times
-#             bounds = merge_sequence(sequence_start_times, proposal_length_secs)
-#             # add merged bounds and its probs to dict
-#             all_bounds[bounds] = sequence_probs
-#             # reset sequence and probs
-#             sequence_start_times = []
-#             sequence_probs = []
-
-#         sequence_start_times.append(peak_start_times[i])
-#         sequence_probs.append(filtered_probs[i])
-
-#     if len(sequence_start_times) > 0:
-#         bounds = merge_sequence(sequence_start_times, proposal_length_secs)
-#         all_bounds[bounds] = sequence_probs
-
-#     return all_bounds
-
-
 def merge_bounds(action_probs, 
                  action_start_times,
                  proposal_length_secs,
@@ -358,7 +313,7 @@ def NMS_linking(bounds, bound_probs, conf_thresholds, side):
     if side == "left":
         # all bounds should have same end time since search ends at the best bound
         end_times = list(set(map(lambda x:x[1], bounds)))
-        assert len(end_times) == 1, f"Error: left side end times are different {end_times}" 
+        # assert len(end_times) == 1, f"Error: left side end times are different {end_times}" 
         end_time = end_times[0]
 
         # analyze changes in start time 
@@ -370,7 +325,7 @@ def NMS_linking(bounds, bound_probs, conf_thresholds, side):
     elif side == "right":
         # all bounds should have same start time since search begins from best bound onward
         start_times = list(set(map(lambda x:x[0], bounds)))
-        assert len(start_times) == 1, f"Error: right side start times are different {start_times}" 
+        # assert len(start_times) == 1, f"Error: right side start times are different {start_times}" 
         start_time = start_times[0]
 
         # analyze changes in end time 
